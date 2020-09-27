@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import th.ac.ku.atm.data.CustomerRepository;
 import th.ac.ku.atm.model.Customer;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 @Service
 public class CustomerService {
     private CustomerRepository repository;
@@ -21,10 +23,11 @@ public class CustomerService {
     }
     public Customer findCustomer(int id) {
         try {
-            return repository.findById(id);
-        } catch (EmptyResultDataAccessException e) {
+            return repository.findById(id).get();
+        } catch (NoSuchElementException e) {
             return null;
         }
+
     }
     public Customer checkPin(Customer inputCustomer) {
         Customer storedCustomer = findCustomer(inputCustomer.getId());
